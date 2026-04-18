@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  password_hash String
+  created_at    DateTime  @default(now())
+  brackets      Bracket[]
+}
+
+model Bracket {
+  id         String   @id @default(cuid())
+  slug       String   @unique
+  name       String
+  owner_id   String
+  owner      User     @relation(fields: [owner_id], references: [id])
+  status     String   @default("active")
+  created_at DateTime @default(now())
+  entries    Entry[]
+  votes      Vote[]
+}
+
+model Entry {
+  id         String   @id @default(cuid())
+  bracket_id String
+  bracket    Bracket  @relation(fields: [bracket_id], references: [id], onDelete: Cascade)
+  image_path String?
+  label      String?
+  elo_score  Float    @default(1000)
+  win_count  Int      @default(0)
+  loss_count Int      @default(0)
+  created_at DateTime @default(now())
+  votes_won  Vote[]   @relation("winner")
+  votes_lost Vote[]   @relation("loser")
+}
+
+model Vote {
+  id         String   @id @default(cuid())
+  bracket_id String
+  bracket    Bracket  @relation(fields: [bracket_id], references: [id], onDelete: Cascade)
+  winner_id  String
+  winner     Entry    @relation("winner", fields: [winner_id], references: [id])
+  loser_id   String
+  loser      Entry    @relation("loser", fields: [loser_id], references: [id])
+  created_at DateTime @default(now())
+  // ip_address String?
+}

@@ -1,0 +1,44 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: voteoff
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  backend:
+    build: ./backend
+    environment:
+      DATABASE_URL: postgresql://postgres:password@postgres:5432/voteoff
+      JWT_SECRET: ${JWT_SECRET:-change-me-in-production}
+      PORT: 3000
+    depends_on:
+      - postgres
+    volumes:
+      - uploads:/app/uploads
+    ports:
+      - "3000:3000"
+
+  frontend:
+    build: ./frontend
+    depends_on:
+      - backend
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - uploads:/uploads:ro
+    depends_on:
+      - frontend
+      - backend
+
+volumes:
+  postgres_data:
+  uploads:
