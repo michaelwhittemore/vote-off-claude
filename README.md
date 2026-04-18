@@ -1,3 +1,5 @@
+Trying to get better about letting claude build things agentically, I'll be writing less code than my usual preference in this project
+
 # Vote-Off
 
 A continuous Elo-ranked voting app. Upload images (or text) to create brackets, share a link, and let people vote on pairs. Rankings update in real time using the Elo algorithm.
