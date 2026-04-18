@@ -1,4 +1,4 @@
-import { Bracket, Entry, Matchup } from './types';
+import type { Bracket, Entry, Matchup } from './types';
 
 const entries: Entry[] = [
   { id: '1', label: 'TypeScript', image_path: null, elo_score: 1050, win_count: 4, loss_count: 1 },

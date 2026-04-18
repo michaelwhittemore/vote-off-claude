@@ -1,4 +1,4 @@
-import { Entry } from '../api/brackets';
+import type { Entry } from '../api/brackets';
 import styles from './EntryCard.module.css';
 
 interface Props {

@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { bracketsApi, Entry } from '../api/brackets';
+import { bracketsApi } from '../api/brackets';
+import type { Entry } from '../api/brackets';
 import styles from './Results.module.css';
 
 export function Results() {
