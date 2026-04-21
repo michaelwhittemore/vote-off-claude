@@ -18,6 +18,7 @@ export function Results() {
 
   return (
     <div className={styles.page}>
+      <Link to="/dashboard" className={styles.backLink}>← My brackets</Link>
       <header className={styles.header}>
         <h1 className={styles.title}>{bracket.name}</h1>
         <Link to={`/b/${slug}`} className={styles.voteLink}>← Vote</Link>

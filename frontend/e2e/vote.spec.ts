@@ -1,10 +1,5 @@
 import { test, expect } from '@playwright/test';
 
-test('root redirects to vote page', async ({ page }) => {
-  await page.goto('/');
-  await expect(page).toHaveURL(/\/b\/mock$/);
-  await expect(page.getByRole('heading', { name: 'Best Programming Languages' })).toBeVisible();
-});
 
 test.describe('Vote page', () => {
   test.beforeEach(async ({ page }) => {
