@@ -1,11 +1,13 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
 import { bracketsApi } from '../api/brackets';
+import { useAuth, useLogout } from '../hooks/useAuth';
 import styles from './Dashboard.module.css';
 
 export function Dashboard() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { data: user } = useAuth();
 
   const { data: brackets, isLoading } = useQuery({
     queryKey: ['brackets'],
@@ -17,15 +19,21 @@ export function Dashboard() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['brackets'] }),
   });
 
+  const { mutate: logout } = useLogout();
+
   if (isLoading) return <div className={styles.center}>Loading...</div>;
 
   return (
     <div className={styles.page}>
       <header className={styles.header}>
         <h1 className={styles.title}>My Brackets</h1>
-        <button className={styles.newBtn} onClick={() => navigate('/brackets/new')}>
-          + New bracket
-        </button>
+        <div className={styles.headerRight}>
+          {user && <span className={styles.userEmail}>{user.email}</span>}
+          <button className={styles.logoutBtn} onClick={() => logout()}>Logout</button>
+          <button className={styles.newBtn} onClick={() => navigate('/brackets/new')}>
+            + New bracket
+          </button>
+        </div>
       </header>
 
       {!brackets?.length ? (

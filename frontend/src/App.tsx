@@ -5,6 +5,7 @@ import { Results } from './pages/Results';
 import { Dashboard } from './pages/Dashboard';
 import { NewBracket } from './pages/NewBracket';
 import { Manage } from './pages/Manage';
+import { ProtectedRoute } from './components/ProtectedRoute';
 
 const queryClient = new QueryClient();
 
@@ -13,11 +14,11 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/brackets/new" element={<NewBracket />} />
+          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/brackets/new" element={<ProtectedRoute><NewBracket /></ProtectedRoute>} />
+          <Route path="/b/:slug/manage" element={<ProtectedRoute><Manage /></ProtectedRoute>} />
           <Route path="/b/:slug" element={<Vote />} />
           <Route path="/b/:slug/results" element={<Results />} />
-          <Route path="/b/:slug/manage" element={<Manage />} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       </BrowserRouter>

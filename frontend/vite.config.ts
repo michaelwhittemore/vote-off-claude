@@ -5,8 +5,8 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/api': 'http://localhost:3000',
-      '/uploads': 'http://localhost:3000',
+      '/api': process.env.BACKEND_URL ?? 'http://localhost:3000',
+      '/uploads': process.env.BACKEND_URL ?? 'http://localhost:3000',
     },
   },
   test: {
