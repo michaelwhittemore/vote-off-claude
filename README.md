@@ -101,6 +101,18 @@ The Vite dev server proxies `/api` and `/uploads` to `http://localhost:3000` aut
 
 ## Running tests
 
+**All tests** (from repo root, local — requires PostgreSQL running)
+```bash
+npm test
+```
+Runs backend unit tests, backend integration tests, and frontend Playwright e2e tests.
+
+**Backend tests only** (against running Docker dev stack)
+```bash
+npm run test:docker
+```
+Runs backend unit + integration tests inside the Docker containers. Frontend e2e tests require a local browser and must be run outside Docker.
+
 **Backend unit tests** (no database needed)
 ```bash
 cd backend

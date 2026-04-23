@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "test": "cd backend && npm test && npm run test:integration && cd ../frontend && npx playwright test",
+    "test:docker": "docker compose -f docker-compose.dev.yml exec backend npm test && docker compose -f docker-compose.dev.yml exec backend npm run test:integration"
+  }
+}
