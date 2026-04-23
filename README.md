@@ -32,7 +32,25 @@ Open `http://localhost:5173/b/anything` — the slug is ignored in mock mode.
 
 ---
 
-### Option B — Full stack
+### Option B — Full stack with hot reloading (recommended)
+
+Runs everything in Docker with a single command. Source files are mounted as volumes so changes are picked up automatically.
+
+**Prerequisites:** Docker Desktop running, ports 3000, 5173, and 5432 free.
+
+```bash
+docker compose -f docker-compose.dev.yml up
+```
+
+On first run this installs dependencies, syncs the Prisma schema, seeds the database, and starts both dev servers. Open `http://localhost:5173`.
+
+Prisma Studio (database browser) is also available at `http://localhost:5555`.
+
+The seed runs automatically on every startup — it is safe to ignore if it fails on subsequent runs (data already exists). The app auto-logs in with the seeded dev account (`test@example.com` / `password`) so no manual login is required.
+
+---
+
+### Option C — Full stack (manual, no Docker for app servers)
 
 **Prerequisites:** Docker Desktop running, ports 3000 and 5432 free.
 
@@ -40,6 +58,7 @@ Open `http://localhost:5173/b/anything` — the slug is ignored in mock mode.
 ```bash
 docker compose up postgres -d
 ```
+> `postgres` starts only the database service (not the backend/frontend containers). `-d` runs it in the background so your terminal stays free.
 
 **2. Set up the backend**
 ```bash
@@ -70,9 +89,13 @@ The Vite dev server proxies `/api` and `/uploads` to `http://localhost:3000` aut
 
 | URL | Description |
 |---|---|
+| `http://localhost:5173/dashboard` | Bracket list (default landing page) |
+| `http://localhost:5173/brackets/new` | Create a new bracket |
 | `http://localhost:5173/b/:slug` | Voting page |
 | `http://localhost:5173/b/:slug/results` | Rankings |
+| `http://localhost:5173/b/:slug/manage` | Add/remove entries, edit bracket |
 | `http://localhost:3000/api/brackets/:slug` | Bracket API (direct) |
+| `http://localhost:5555` | Prisma Studio (database browser, Docker dev only) |
 
 ---
 
@@ -104,12 +127,31 @@ npm test
 
 Setting `VITE_MOCK=true` replaces all API calls with an in-memory implementation defined in `frontend/src/api/mock.ts`. The mock:
 
-- Serves a single pre-populated bracket ("Best Programming Languages", 8 entries)
+- Supports all CRUD operations: create/list/update/delete brackets, add/remove entries
+- Serves a pre-populated bracket ("Best Programming Languages", 8 entries) on first load
 - Picks matchups using the same least-played-first logic as the real backend
 - Applies real Elo calculations on each vote, so rankings change as you vote
+- Auth is bypassed entirely — no login required
 - Resets on page refresh
 
 To add more mock brackets or entries, edit `frontend/src/api/mock.ts` directly.
+
+---
+
+## Known temporary shortcuts
+
+- **Auto-login**: In full-stack mode, `ProtectedRoute` automatically logs in as `test@example.com` / `password` if no session exists. This is a dev shortcut — a real login page comes later.
+
+---
+
+## Prisma 7 notes
+
+This project uses Prisma 7, which changed how database connections work:
+
+- The `datasource` block in `schema.prisma` has **no `url` field** — this is intentional
+- Connection URL for CLI tools (migrate, db push) is set in `prisma.config.ts`
+- Runtime `PrismaClient` requires a pg adapter: see `backend/src/lib/prisma.ts`
+- Any file that instantiates `PrismaClient` directly (e.g. `prisma/seed.ts`) must also use the adapter
 
 ---
 
