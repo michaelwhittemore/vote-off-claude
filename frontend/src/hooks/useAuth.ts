@@ -22,7 +22,7 @@ export function useLogin() {
   return useMutation({
     mutationFn: (creds: { email: string; password: string }) =>
       client.post('/auth/login', creds).then(r => r.data),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['auth'] }),
+    onSuccess: (user) => queryClient.setQueryData(['auth'], user),
   });
 }
 
@@ -31,7 +31,7 @@ export function useRegister() {
   return useMutation({
     mutationFn: (creds: { email: string; password: string }) =>
       client.post('/auth/register', creds).then(r => r.data),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['auth'] }),
+    onSuccess: (user) => queryClient.setQueryData(['auth'], user),
   });
 }
 
