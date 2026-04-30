@@ -1,0 +1,110 @@
+.page {
+  min-height: 100vh;
+  color: #e0e0f0;
+  display: flex;
+  flex-direction: column;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 2rem;
+  border-bottom: 1px solid #1a1a2e;
+}
+
+.logo {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #6c63ff;
+  letter-spacing: -0.5px;
+}
+
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.navLink {
+  color: #a0a0c0;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.15s;
+}
+
+.navLink:hover {
+  color: #e0e0f0;
+}
+
+.cta {
+  background: #6c63ff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  padding: 0.5rem 1.1rem;
+  font-size: 0.95rem;
+  transition: background 0.15s;
+}
+
+.cta:hover {
+  background: #574fd6;
+}
+
+.hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 1.5rem;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.headline {
+  font-size: clamp(2.2rem, 6vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.15;
+  margin: 0 0 1.25rem;
+  letter-spacing: -1px;
+}
+
+.sub {
+  font-size: 1.1rem;
+  color: #a0a0c0;
+  line-height: 1.6;
+  margin: 0 0 2.5rem;
+  max-width: 480px;
+}
+
+.heroCta {
+  background: #6c63ff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 10px;
+  padding: 0.85rem 2rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  transition: background 0.15s;
+}
+
+.heroCta:hover {
+  background: #574fd6;
+}
+
+.signin {
+  margin-top: 1.25rem;
+  font-size: 0.9rem;
+  color: #a0a0c0;
+}
+
+.signinLink {
+  color: #6c63ff;
+  text-decoration: none;
+}
+
+.signinLink:hover {
+  text-decoration: underline;
+}

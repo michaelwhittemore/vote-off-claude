@@ -7,6 +7,7 @@ import { NewBracket } from './pages/NewBracket';
 import { Manage } from './pages/Manage';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
+import { Landing } from './pages/Landing';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
 const queryClient = new QueryClient();
@@ -16,6 +17,7 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
@@ -23,7 +25,7 @@ export default function App() {
           <Route path="/b/:slug/manage" element={<ProtectedRoute><Manage /></ProtectedRoute>} />
           <Route path="/b/:slug" element={<Vote />} />
           <Route path="/b/:slug/results" element={<Results />} />
-          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>

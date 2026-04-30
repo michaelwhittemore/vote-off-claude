@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
 
-test('root redirects to dashboard', async ({ page }) => {
+test('root shows landing page', async ({ page }) => {
   await page.goto('/');
-  await expect(page).toHaveURL(/\/dashboard$/);
-  await expect(page.getByRole('heading', { name: 'My Brackets' })).toBeVisible();
+  await expect(page).toHaveURL('/');
+  await expect(page.getByRole('heading', { name: /rank anything/i })).toBeVisible();
 });
 
 test.describe('Dashboard', () => {
