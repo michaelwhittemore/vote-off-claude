@@ -15,6 +15,23 @@ vote-off-claude/
 └── PLANNING.md     # Architecture and design decisions
 ```
 
+### Frontend stack
+- **React 19** + **TypeScript** — UI
+- **Vite** — dev server and bundler
+- **React Router v7** — client-side routing
+- **TanStack Query v5** — server state, caching, and mutations
+- **Axios** — HTTP client
+- **Playwright** — E2E browser tests
+- **Vitest** — unit tests
+
+### Backend stack
+- **Express 5** + **TypeScript** — API server
+- **Prisma 7** — ORM
+- **PostgreSQL** — database
+- **bcryptjs** + **jsonwebtoken** — auth (cookie-based JWT)
+- **multer** — file uploads
+- **Vitest** + **supertest** — unit and integration tests
+
 ---
 
 ## Running in development
@@ -46,7 +63,9 @@ On first run this installs dependencies, syncs the Prisma schema, seeds the data
 
 Prisma Studio (database browser) is also available at `http://localhost:5555`.
 
-The seed runs automatically on every startup — it is safe to ignore if it fails on subsequent runs (data already exists). The app auto-logs in with the seeded dev account (`test@example.com` / `password`) so no manual login is required.
+**Test account** (created by the seed script):
+- Email: `test@example.com`
+- Password: `password`
 
 ---
 
@@ -79,17 +98,16 @@ npm run dev                 # starts on http://localhost:5173
 
 The Vite dev server proxies `/api` and `/uploads` to `http://localhost:3000` automatically — no CORS configuration needed.
 
-**Test account**
-- Email: `test@example.com`
-- Password: `password`
-
 ---
 
 ## Key URLs (dev)
 
 | URL | Description |
 |---|---|
-| `http://localhost:5173/dashboard` | Bracket list (default landing page) |
+| `http://localhost:5173` | Landing page |
+| `http://localhost:5173/login` | Sign in |
+| `http://localhost:5173/register` | Create account |
+| `http://localhost:5173/dashboard` | Bracket list |
 | `http://localhost:5173/brackets/new` | Create a new bracket |
 | `http://localhost:5173/b/:slug` | Voting page |
 | `http://localhost:5173/b/:slug/results` | Rankings |
@@ -127,10 +145,10 @@ npm run test:integration
 
 Integration tests use a separate `voteoff_test` database. The test setup runs migrations and wipes data between each test automatically.
 
-**Frontend tests**
+**Frontend E2E tests**
 ```bash
 cd frontend
-npm test
+npm run test:e2e
 ```
 
 ---
@@ -147,12 +165,6 @@ Setting `VITE_MOCK=true` replaces all API calls with an in-memory implementation
 - Resets on page refresh
 
 To add more mock brackets or entries, edit `frontend/src/api/mock.ts` directly.
-
----
-
-## Known temporary shortcuts
-
-- **Auto-login**: In full-stack mode, `ProtectedRoute` automatically logs in as `test@example.com` / `password` if no session exists. This is a dev shortcut — a real login page comes later.
 
 ---
 
