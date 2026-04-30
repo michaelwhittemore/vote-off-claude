@@ -30,9 +30,14 @@ test.describe('Dashboard', () => {
     await page.getByRole('link', { name: /my brackets/i }).click();
     await expect(page.getByText('Temp Bracket')).toBeVisible();
 
-    page.once('dialog', d => d.accept());
     const row = page.locator('li').filter({ hasText: 'Temp Bracket' });
     await row.getByRole('button', { name: /delete/i }).click();
-    await expect(page.getByText('Temp Bracket')).not.toBeVisible();
+
+    // Confirm in the modal
+    const modal = page.locator('[class*="dialog"]');
+    await expect(modal).toBeVisible();
+    await modal.getByRole('button', { name: /^delete$/i }).click();
+
+    await expect(page.locator('li').filter({ hasText: 'Temp Bracket' })).not.toBeVisible();
   });
 });

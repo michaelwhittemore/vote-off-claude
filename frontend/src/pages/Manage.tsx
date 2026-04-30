@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { bracketsApi } from '../api/brackets';
 import type { Entry } from '../api/brackets';
+import { ConfirmModal } from '../components/ConfirmModal';
 import styles from './Manage.module.css';
 
 export function Manage() {
@@ -14,6 +15,7 @@ export function Manage() {
   const [nameInput, setNameInput] = useState('');
   const [newLabel, setNewLabel] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const { data: bracket, isLoading } = useQuery({
     queryKey: ['bracket', slug],
@@ -100,7 +102,7 @@ export function Manage() {
           </button>
           <button
             className={styles.deleteBtn}
-            onClick={() => { if (confirm(`Delete "${bracket.name}"?`)) deleteBracket(); }}
+            onClick={() => setShowDeleteModal(true)}
           >
             Delete bracket
           </button>
@@ -162,6 +164,13 @@ export function Manage() {
           </button>
         </form>
       </section>
+      {showDeleteModal && (
+        <ConfirmModal
+          message={`Delete "${bracket.name}"? This cannot be undone.`}
+          onConfirm={() => { setShowDeleteModal(false); deleteBracket(); }}
+          onCancel={() => setShowDeleteModal(false)}
+        />
+      )}
     </div>
   );
 }

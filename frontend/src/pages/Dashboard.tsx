@@ -1,13 +1,16 @@
+import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
 import { bracketsApi } from '../api/brackets';
 import { useAuth, useLogout } from '../hooks/useAuth';
+import { ConfirmModal } from '../components/ConfirmModal';
 import styles from './Dashboard.module.css';
 
 export function Dashboard() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { data: user } = useAuth();
+  const [pendingDelete, setPendingDelete] = useState<string | null>(null);
 
   const { data: brackets, isLoading } = useQuery({
     queryKey: ['brackets'],
@@ -52,9 +55,7 @@ export function Dashboard() {
                 <Link to={`/b/${b.slug}/manage`} className={styles.link}>Manage</Link>
                 <button
                   className={styles.deleteBtn}
-                  onClick={() => {
-                    if (confirm(`Delete "${b.name}"?`)) deleteBracket(b.slug);
-                  }}
+                  onClick={() => setPendingDelete(b.slug)}
                 >
                   Delete
                 </button>
@@ -62,6 +63,14 @@ export function Dashboard() {
             </li>
           ))}
         </ul>
+      )}
+
+      {pendingDelete && (
+        <ConfirmModal
+          message={`Delete "${brackets?.find(b => b.slug === pendingDelete)?.name}"? This cannot be undone.`}
+          onConfirm={() => { deleteBracket(pendingDelete); setPendingDelete(null); }}
+          onCancel={() => setPendingDelete(null)}
+        />
       )}
     </div>
   );
